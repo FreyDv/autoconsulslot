@@ -32,8 +32,6 @@ export async function main() {
 
   const stepDetermination = new StepDetermination(stepHandler.getPage());
 
-  const step = await stepDetermination.getStep();
-
   let unknownStateCounter = 0;
   let currentState: Step = Step.Unknown;
 

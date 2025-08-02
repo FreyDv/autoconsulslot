@@ -3,7 +3,7 @@ import path, { dirname, join, resolve } from 'node:path';
 import { waitForNotEmptyList } from './utils';
 import { ApplicantInfo, Dependent, Step } from './type';
 import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync } from 'node:fs';
 
 export class StepHandler {
 
@@ -91,7 +91,7 @@ export class StepHandler {
 
   static async LUNCHCHROME(chromePath?: string, applicantInfo?: ApplicantInfo) {
     chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-    const rootPath = resolve('browsers');
+    const rootPath = resolve(join('..','..','browsers'));
     const folder = applicantInfo
       ? join(rootPath, applicantInfo.year + applicantInfo.monthOrderNumber + applicantInfo.day)
       : join(rootPath, 'general');
@@ -99,33 +99,39 @@ export class StepHandler {
     const pathToFile = join(folder, 'Default', 'Preferences', 'com.google.Chrome.json');
     const pathToDir = dirname(pathToFile);
 
-// 1) ensure that the **directory** exists
+
     if (!existsSync(pathToDir)) {
       mkdirSync(pathToDir, { recursive: true });
     }
 
+
+// 1) ensure that the **directory** exists
+//     if (!existsSync(pathToDir)) {
+//       mkdirSync(pathToDir, { recursive: true });
+//     }
+
 // // 2) write the prefs file if it doesn’t already exist
-    if (!existsSync(pathToFile)) {
-      writeFileSync(
-        pathToFile,
-        JSON.stringify({
-          // disable the built-in password manager UI:
-          credentials_enable_service: false,
-          profile: {
-            password_manager_enabled: false,
-          },
-          // set Google as your default search provider
-          default_search_provider: {
-            name: 'Google',
-            keyword: 'google.com',
-            search_url: 'https://www.google.com/search?q={searchTerms}',
-            suggest_url:
-              'https://www.google.com/complete/search?output=chrome&q={searchTerms}',
-          },
-        }, null, 2)
-        , 'utf-8',
-      );
-    }
+//     if (!existsSync(pathToFile)) {
+//       writeFileSync(
+//         pathToFile,
+//         JSON.stringify({
+//           // disable the built-in password manager UI:
+//           credentials_enable_service: false,
+//           profile: {
+//             password_manager_enabled: false,
+//           },
+//           // set Google as your default search provider
+//           default_search_provider: {
+//             name: 'Google',
+//             keyword: 'google.com',
+//             search_url: 'https://www.google.com/search?q={searchTerms}',
+//             suggest_url:
+//               'https://www.google.com/complete/search?output=chrome&q={searchTerms}',
+//           },
+//         }, null, 2)
+//         , 'utf-8',
+//       );
+//     }
 
 
     const args = [
@@ -157,7 +163,7 @@ export class StepHandler {
   }
 
   private async fileKeyHandler(fileName: string, password: string) {
-    const filePath = path.resolve('data', fileName);
+    const filePath = path.resolve(join('..','..','data', fileName));
     await this.page.setInputFiles('input[type="file"][accept*=".pfx"]', filePath);
     await this.page.locator('//input[@id=\'id-app-login-sign-form-file-key-password\']').fill(password);
     await this.page.click('//button[@id="id-app-login-sign-form-file-key-sign-button"]');

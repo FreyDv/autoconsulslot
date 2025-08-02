@@ -1,4 +1,4 @@
-import { services } from '@modules/player-write/service';
+import { services } from '../modules/player-write/service';
 
 export enum Step {
   Loading,
