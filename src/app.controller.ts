@@ -8,7 +8,7 @@ export class AppController {
   }
 
   @Get()
-  getHello(): Promise<EnvironmentVariables> {
+  getHello(): Promise<void> {
     return this.appService.getHello();
   }
 }
