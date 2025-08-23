@@ -1,12 +1,15 @@
-
 import { Context, Telegraf } from 'telegraf';
 import { TelegramService } from './telegram.service';
-import { Ctx, Message, On, Start, Update, Action, InjectBot, Command } from 'nestjs-telegraf';
+import { Action, Command, Ctx, InjectBot, Message, On, Start, Update } from 'nestjs-telegraf';
 
 @Update()
 export class TelegramUpdate {
   constructor(private readonly telegramService: TelegramService, @InjectBot() private readonly bot: Telegraf<Context>) {
-     this.bot.telegram.setMyCommands([
+    this.initTelegrafCommands()
+  }
+
+  initTelegrafCommands(){
+    this.bot.telegram.setMyCommands([
       { command: 'start', description: 'Запустить бота' },
       { command: 'help', description: 'Помощь' },
       { command: 'info', description: 'Информация о боте' },
@@ -28,7 +31,7 @@ export class TelegramUpdate {
     });
   }
 
-    @Action('download_data')
+  @Action('download_data')
   async handleBtn1(@Ctx() ctx: Context) {
     await ctx.answerCbQuery();
     await ctx.reply('Вы нажали Кнопку 1');
@@ -56,5 +59,6 @@ export class TelegramUpdate {
     console.log(reversedText)
     await ctx.reply(reply);
   }
+
 }
 

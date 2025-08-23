@@ -1,33 +1,36 @@
 import { Injectable } from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
 import { User } from './user.entity';
+import { UserRepository } from '../repo/usr-repo/user-service';
 
 @Injectable()
 export class UsersService {
-  private readonly filePath = path.join(__dirname, 'users.json');
 
-  private readUsers(): User[] {
-    if (!fs.existsSync(this.filePath)) {
-      fs.writeFileSync(this.filePath, JSON.stringify([]));
-    }
-    const data = fs.readFileSync(this.filePath, 'utf-8');
-    return JSON.parse(data);
-  }
+  constructor(private readonly usersService: UserRepository) {}
 
-  private saveUsers(users: User[]) {
-    fs.writeFileSync(this.filePath, JSON.stringify(users, null, 2));
-  }
-
-  create(userData: User): User {
+  saveUser(userData: User): User {
     return userData
   }
 
-  update(id: number, userData: Partial<User>): User {
-    return userData as User;
+  getUserById(id: string): User {
+     const  rawUser= this.usersService.readUsers(id)
+
+    return User.fromPrimitive(rawUser)
   }
 
   delete(id: number) {
     console.log(id)
   }
 }
+
+
+new Error(",zdjfhbgaeojbvaefouybvfadb")
+
+
+controller
+
+try {
+
+}chetch(err){
+  err.
+}
+

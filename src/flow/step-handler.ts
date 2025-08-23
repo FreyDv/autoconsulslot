@@ -166,6 +166,7 @@ export class StepHandler {
     const filePath = path.resolve(join('..','..','data', fileName));
     await this.page.setInputFiles('input[type="file"][accept*=".pfx"]', filePath);
     await this.page.locator('//input[@id=\'id-app-login-sign-form-file-key-password\']').fill(password);
+    
     await this.page.click('//button[@id="id-app-login-sign-form-file-key-sign-button"]');
   }
 

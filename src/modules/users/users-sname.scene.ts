@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { User } from './user.entity';
 
 @Controller('users')
-export class UsersController {
+export class UsersNameScene {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()

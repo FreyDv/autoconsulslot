@@ -65,6 +65,7 @@ export interface ApplicantInfo {
   service: typeof services[number];
   fileName: string;
   password: string;
+  sourceOfAuthKey: string;
   day: Day;
   monthOrderNumber: Month;
   year: Year;
